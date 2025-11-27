@@ -13,7 +13,7 @@ int _putchar(char c)
 /**
  * _printf - produces output according to a format
  * @format: format string
- * Return: number of characters printed
+ * Return: number of characters printed, or -1 on error
  */
 int _printf(const char *format, ...)
 {
@@ -32,6 +32,12 @@ int _printf(const char *format, ...)
 		if (*format == '%')
 		{
 			format++;
+			if (*format == '\0')
+			{
+				va_end(args);
+				return (-1);
+			}
+
 			if (*format == 'c')
 			{
 				c = va_arg(args, int);
@@ -43,15 +49,15 @@ int _printf(const char *format, ...)
 				if (str == NULL)
 					str = "(null)";
 				while (*str)
-				{
-					count += _putchar(*str);
-					str++;
-				}
+					count += _putchar(*str++);
 			}
 			else if (*format == '%')
 				count += _putchar('%');
 			else
-				count += _putchar('%'), count += _putchar(*format);
+			{
+				count += _putchar('%');
+				count += _putchar(*format);
+			}
 		}
 		else
 			count += _putchar(*format);
