@@ -11,63 +11,6 @@ int _putchar(char c)
 }
 
 /**
- * _printf - produces output according to a format
- * @format: format string
- * Return: number of characters printed, or -1 on error
- */
-int _printf(const char *format, ...)
-{
-	va_list args;
-	int count = 0;
-	char *str;
-	char c;
-
-	if (format == NULL)
-		return (-1);
-
-	va_start(args, format);
-
-	while (*format)
-	{
-		if (*format == '%')
-		{
-			format++;
-			if (*format == '\0')
-			{
-				va_end(args);
-				return (-1);
-			}
-
-			if (*format == 'c')
-			{
-				c = va_arg(args, int);
-				count += _putchar(c);
-			}
-			else if (*format == 's')
-			{
-				str = va_arg(args, char *);
-				if (str == NULL)
-					str = "(null)";
-				while (*str)
-					count += _putchar(*str++);
-			}
-			else if (*format == '%')
-				count += _putchar('%');
-			else
-			{
-				count += _putchar('%');
-				count += _putchar(*format);
-			}
-		}
-		else
-			count += _putchar(*format);
-		format++;
-	}
-
-	va_end(args);
-	return (count);
-}
-/**
  * print_number - prints an integer to stdout
  * @n: integer to print
  * Return: number of characters printed
@@ -90,6 +33,80 @@ int print_number(int n)
 
 	count += _putchar((num % 10) + '0');
 
+	return (count);
+}
+
+/**
+ * handle_percent - handles a conversion specifier
+ * @specifier: the character after %
+ * @args: va_list of arguments
+ * Return: number of characters printed
+ */
+int handle_percent(char specifier, va_list args)
+{
+	int count = 0;
+	char *str;
+	char c;
+
+	if (specifier == 'c')
+	{
+		c = va_arg(args, int);
+		count += _putchar(c);
+	}
+	else if (specifier == 's')
+	{
+		str = va_arg(args, char *);
+		if (!str)
+			str = "(null)";
+		while (*str)
+			count += _putchar(*str++);
+	}
+	else if (specifier == '%')
+		count += _putchar('%');
+	else if (specifier == 'd' || specifier == 'i')
+		count += print_number(va_arg(args, int));
+	else
+	{
+		count += _putchar('%');
+		count += _putchar(specifier);
+	}
+
+	return (count);
+}
+
+/**
+ * _printf - produces output according to a format
+ * @format: format string
+ * Return: number of characters printed, or -1 on error
+ */
+int _printf(const char *format, ...)
+{
+	va_list args;
+	int count = 0;
+
+	if (format == NULL)
+		return (-1);
+
+	va_start(args, format);
+
+	while (*format)
+	{
+		if (*format == '%')
+		{
+			format++;
+			if (*format == '\0')
+			{
+				va_end(args);
+				return (-1);
+			}
+			count += handle_percent(*format, args);
+		}
+		else
+			count += _putchar(*format);
+		format++;
+	}
+
+	va_end(args);
 	return (count);
 }
 
