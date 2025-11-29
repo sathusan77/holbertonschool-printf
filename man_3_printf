@@ -1,64 +1,39 @@
-.TH _PRINTF 3 "November 2025" "Holberton Project" "Student Manual"
+.TH _PRINTF 3 "27 Nov 2025" "1.0" "holbertonschool printf man page"
 .SH NAME
-_printf \- custom version of the C printf function
+_printf \- produces output according to a format
 .SH SYNOPSIS
-.B #include "main.h"
-.PP
-.BI "int _printf(const char *" format ", ...);"
+#include "main.h"
+
+int _printf(const char *format, ...);
 .SH DESCRIPTION
-The
-.B _printf
-function prints formatted output to the standard output.
-The
-.I format
-string may contain ordinary characters or conversion
-specifiers introduced by a
-.B %
-character.
+_printf is a simplified version of the standard printf function. It writes output to
+the standard output (stdout) according to the format string provided.
 
-This implementation supports only the following conversions:
-
+The function handles the following conversion specifiers:
 .TP
-.B %c
-Print a single character.
-
+%c
+Prints a single character.
 .TP
-.B %s
-Print a string. If the argument is
-.B NULL,
-"(null)" is printed.
-
+%s
+Prints a string of characters. If the argument is NULL, "(null)" is printed.
 .TP
-.B %d
+%%
+Prints the percent character '%'.
 .TP
-.B %i
-Print a signed integer in decimal format.
-
-.TP
-.B %%
-Print a literal percent sign.
-
+%d, %i
+Prints a signed decimal integer.
 .SH RETURN VALUE
-Returns the total number of characters printed.
-If
-.I format
-is
-.B NULL
-or contains an incomplete "%", the function returns
-.BR -1 .
-
+On success, _printf returns the number of characters printed (excluding the null byte used
+to end output). If an error occurs, such as a NULL format string, the function returns -1.
 .SH EXAMPLES
+The following examples demonstrate usage:
 .nf
-_printf("Char: %c\n", 'A');
-_printf("Hello %s!\n", "world");
-_printf("Value: %d\n", -42);
-_printf("Percent: %%\n");
+    _printf("Hello, World!\n");
+    _printf("Character: %c\n", 'A');
+    _printf("String: %s\n", "Test");
+    _printf("Percent: %%\n");
+    _printf("Number: %d\n", 42);
 .fi
+.SH AUTHOR
+Your Name
 
-
-/*  
- * Authors:
- *  - Ouahes Hédy
- *  - Conzo Mwana Geoffray
- *  - El Ioussoufi Nael
- */
