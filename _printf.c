@@ -48,7 +48,7 @@ int _printf(const char *format, ...)
     va_list args;
     int count = 0;
 
-    if (format == NULL)
+    if (!format)
         return (-1);
 
     va_start(args, format);
@@ -58,7 +58,7 @@ int _printf(const char *format, ...)
         if (*format == '%')
         {
             format++;
-            if (*format == '\0')
+            if (!*format)  /* % à la fin de la chaîne */
             {
                 va_end(args);
                 return (-1);
@@ -67,6 +67,7 @@ int _printf(const char *format, ...)
         }
         else
             count += _putchar(*format);
+
         format++;
     }
 
