@@ -40,5 +40,37 @@ int handle_percent(char specifier, va_list args)
 
 /**
  * _printf - produces output according to a format
- * @format: format strin*
+ * @format: format string
+ * Return: number of characters printed, or -1 on error
+ */
+int _printf(const char *format, ...)
+{
+	va_list args;
+	int count = 0;
+
+	if (format == NULL)
+		return (-1);
+
+	va_start(args, format);
+
+	while (*format)
+	{
+		if (*format == '%')
+		{
+			format++;
+			if (*format == '\0')
+			{
+				va_end(args);
+				return (-1);
+			}
+			count += handle_percent(*format, args);
+		}
+		else
+			count += _putchar(*format);
+		format++;
+	}
+
+	va_end(args);
+	return (count);
+}
 
